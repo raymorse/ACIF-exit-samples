@@ -1,0 +1,1301 @@
+1PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190707                 Date 12/20/2019  Time 11:03:51   Page     1
+0PROCESS(CBL) statements:
+  PROCESS DYNAM NUMPROC(PFD) TRUNC(OPT) APOST     NOSEQ            0002000
+0Options in effect:
+  NOADATA
+    ADV
+    AFP(NOVOLATILE)
+    APOST
+    ARCH(7)
+    ARITH(COMPAT)
+  NOAWO
+  NOBLOCK0
+    BUFSIZE(4096)
+  NOCICS
+    CODEPAGE(1140)
+  NOCOMPILE(S)
+  NOCOPYLOC
+  NOCOPYRIGHT
+  NOCURRENCY
+    DATA(31)
+    DBCS
+  NODECK
+  NODEFINE
+  NODIAGTRUNC
+    DISPSIGN(COMPAT)
+  NODLL
+  NODUMP
+    DYNAM
+  NOEXIT
+  NOEXPORTALL
+  NOFASTSRT
+    FLAG(I,I)
+  NOFLAGSTD
+    HGPR(PRESERVE)
+  NOINITCHECK
+  NOINITIAL
+    INLINE
+    INTDATE(ANSI)
+    LANGUAGE(EN)
+    LINECOUNT(60)
+  NOLIST
+  NOMAP
+    MAXPCF(100000)
+  NOMDECK
+  NONAME
+    NSYMBOL(NATIONAL)
+  NONUMBER
+  NONUMCHECK
+    NUMPROC(PFD)
+    OBJECT
+  NOOFFSET
+    OPTIMIZE(0)
+    OUTDD(SYSOUT)
+  NOPARMCHECK
+    PGMNAME(COMPAT)
+    QUALIFY(COMPAT)
+    RENT
+    RMODE(AUTO)
+1PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190707                 Date 12/20/2019  Time 11:03:51   Page     2
+0 NORULES
+  NOSERVICE
+  NOSEQUENCE
+    SOURCE
+    SPACE(1)
+  NOSQL
+    SQLCCSID
+  NOSQLIMS
+  NOSSRANGE
+  NOSTGOPT
+    SUPPRESS
+  NOTERM
+  NOTEST(NODWARF,NOSOURCE,NOSEPARATE)
+  NOTHREAD
+    TRUNC(OPT)
+  NOVBREF
+    VLR(STANDARD)
+    VSAMOPENFS(COMPAT)
+  NOWORD
+    XMLPARSE(XMLSS)
+    XREF(FULL)
+    ZONEDATA(PFD)
+    ZWB
+1PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190707       ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page     3
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+0  000001         000210* LAST UPDATE ON 6 Apr 2018 AT 10:20:18 BY  HOWARDT VERSION 01   *00010003
+   000002         000400 ID DIVISION.                                                     00040002
+   000003         000500 PROGRAM-ID. ACIFOBDT.                                            00050002
+   000004         000600 AUTHOR. TURETZKY--HYDRA.                                         00060002
+   000005         000700 INSTALLATION. IBM BOULDER PROGRAMMING CENTER.                    00070002
+   000006         000800                                                                  00080002
+   000007         000900           This program is a sample exit for ACIF                 00090003
+   000008         001000           (APKACIF,5648-062) demonstrating the use of the ACIF   00100003
+   000009         001100           output exit in a simple print archive.                 00110003
+   000010         001200                                                                  00120002
+   000011         001300           In order to use this exit, include the control         00130002
+   000012         001400           OUTEXIT=ACIFOBDT to enable this exit, and include      00140002
+   000013         001500           the load module in a dataset referenced in STEPLIB     00150002
+   000014         001600           or elsewhere in the module search order.               00160002
+   000015         001700                                                                  00170002
+   000016         001800           The program will change a flagged NOP to a BDT or      00180002
+   000017         001900           EDT. The NOP must contain the content of the BDT/EDT   00190002
+   000018         002000           to be inserted as the body of the NOP structured field.00200002
+   000019         002100           If ACIF writes the output, the BDT will be             00210002
+   000020         002200           removed from the output file, but will remain in       00220002
+   000021         002300           the file for the output written by the exit.           00230002
+   000022         002400           Because ACIF inserts a single BDT/EDT, this exit will  00240002
+   000023         002500           remove the first and last BDT/EDT.                     00250002
+   000024         002600                                                                  00260002
+   000025         002700           This program must either be linked with CEEUOPT        00270003
+   000026         002800           or ACIF must include the control statement             00280003
+   000027         002900           EXTENSIONS = MVSICNV.                                  00290003
+   000028         003000                                                                  00300002
+   000029         003100 DATE-WRITTEN. 10 Dec 2000.                                       00310002
+   000030         003200 DATE-COMPILED. 12/20/19.                                         00320002
+   000031         003300 SECURITY. IBM SAMPLE CODE ONLY.                                  00330002
+   000032         003400*/**************************************************************/ 00340003
+   000033         003500*/*   COPYRIGHT (C) 1993,2007 IBM CORPORATION                  */ 00350003
+   000034         003600*/*   COPYRIGHT (C) 2007,2018 RICOH COMPANY, LTD               */ 00360003
+   000035         003700*/*                                                            */ 00370003
+   000036         003800*/*   Permission to use, copy, modify, and distribute          */ 00380003
+   000037         003900*/*   this software for any purpose with or without fee        */ 00390003
+   000038         004000*/*   is hereby granted, provided that the above               */ 00400003
+   000039         004100*/*   copyright notices appear in all copies.                  */ 00410003
+   000040         004200*/*                                                            */ 00420003
+   000041         004300*/*   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY       */ 00430003
+   000042         004400*/*   OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT       */ 00440003
+   000043         004500*/*   LIMITED TO THE WARRANTIES OF MERCHANTABILITY,            */ 00450003
+   000044         004600*/*   FITNESS FOR A PARTICULAR PURPOSE AND                     */ 00460003
+   000045         004700*/*   NONINFRINGEMENT.  IN NO EVENT SHALL RICOH, RICOH         */ 00470003
+   000046         004800*/*   SUBSIDIARIES, ANY OF ITS SUPPLIERS OR ANY OF THE         */ 00480003
+   000047         004900*/*   OTHER COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,         */ 00490003
+   000048         005000*/*   DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF      */ 00500003
+   000049         005100*/*   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF        */ 00510003
+   000050         005200*/*   OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR         */ 00520003
+   000051         005300*/*   OTHER DEALINGS IN THE SOFTWARE.                          */ 00530003
+   000052         005400*/**************************************************************/ 00540003
+1ACIF Sample output Exit                                        ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page     4
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+   000054         005600 ENVIRONMENT DIVISION.                                            00560002
+   000055         005700 CONFIGURATION SECTION.                                           00570002
+   000056         005800 SOURCE-COMPUTER. IBM-370.                                        00580002
+   000057         005900 OBJECT-COMPUTER. IBM-370.                                        00590002
+   000058         006000 INPUT-OUTPUT SECTION.                                            00600002
+   000059         006100 FILE-CONTROL.                                                    00610002
+   000060         006200     SELECT AFPPAGOT-FILE        ASSIGN TO AFPPAGOT,              00620002 66
+   000061         006300                                 ORGANIZATION SEQUENTIAL          00630002
+   000062         006400                                 FILE STATUS AFPPAGOT-STATUS.     00640002 92
+1ACIF Sample output Exit                                        ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page     5
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+   000064         006600 DATA DIVISION.                                                   00660002
+   000065         006700 FILE SECTION.                                                    00670002
+   000066         006800 FD  AFPPAGOT-FILE    GLOBAL,                                     00680002
+   000067         006900     RECORDING MODE V,                                            00690002
+   000068         007000     BLOCK CONTAINS 0 RECORDS,                                    00700002
+   000069         007100     RECORD VARYING DEPENDING ON AFPPAGOT-LENGTH.                 00710002 100
+   000070         007200 01  AFPPAGOT-RECORD.                                             00720002
+   000071         007300     05  AFPPAGOT-INTRODUCER.                                     00730002
+   000072         007400       10  AFPPAGOT-CC       PIC X.                               00740002
+   000073         007500       10  AFPPAGOT-LEN-CHR  PIC XX.                              00750002
+   000074         007600       10  AFPPAGOT-RECLEN   REDEFINES AFPPAGOT-LEN-CHR           00760002 73
+   000075         007700                             PIC 9(4) BINARY.                     00770002
+   000076         007800       10  AFPPAGOT-TYPE     PIC XXX.                             00780002
+   000077         007900       10  AFPPAGOT-FLAG     PIC X.                               00790002
+   000078         008000       10  AFPPAGOT-SEQ-CHR  PIC XX.                              00800002
+   000079         008100       10  AFPPAGOT-SEQNUM   REDEFINES AFPPAGOT-SEQ-CHR           00810002 78
+   000080         008200                             PIC 9(4) BINARY.                     00820002
+   000081         008300     05  AFPPAGOT-DATA.                                           00830002
+   000082         008400         10  AFPPAGOT-ARRAY      OCCURS 0 TO 32743,               00840002
+   000083         008500                                 DEPENDING ON AFPPAGOT-RECLEN,    00850002 74
+   000084         008600                                 INDEXED BY AFPPAGOT-INDX,        00860002
+   000085         008700                                 PIC X.                           00870002
+   000086         008800 WORKING-STORAGE SECTION.                                         00880002
+   000087         008900 77  ABND-PGM                PIC X(8) VALUE 'CEE3ABD'.            00890002
+   000088         009000 77  ABEND-CODE              PIC 9(4) BINARY VALUE 12.            00900002
+   000089         009100 77  AFPWRITE                PIC X(8) VALUE 'AFPWRITE'.           00910002
+   000090         009200 77  PAGE-COUNT              PIC S9(8) BINARY VALUE ZERO.         00920002 IMP
+   000091         009300 77  LINE-COUNT              PIC S9(8) BINARY VALUE ZERO.         00930002 IMP
+   000092         009400 77  AFPPAGOT-STATUS         PIC 99.                              00940002
+   000093         009500     88  AFPPAGOT-OK         VALUE 00.                            00950002
+   000094         009600 77  AFPPAGOT-EOF-FLAG       PIC X    VALUE LOW-VALUE.            00960002 IMP
+   000095         009700     88  AFPPAGOT-EOF        VALUE HIGH-VALUE.                    00970002 IMP
+   000096         009800 77  AFPPAGOT-ERROR-FLAG     PIC X    VALUE LOW-VALUE.            00980002 IMP
+   000097         009900     88  AFPPAGOT-ERROR      VALUE HIGH-VALUE.                    00990002 IMP
+0
+   000099         010100 01  PGMNAME                 PIC X(8) VALUE 'ACIFOBDT' GLOBAL.    01010002
+   000100         010200 01  AFPPAGOT-LENGTH         PIC 9(8) BINARY GLOBAL.              01020002
+0
+   000102         010400 01  DATE-DATA.                                                   01040002
+   000103         010500   05  RUN-DATE.                                                  01050002
+   000104         010600     10 RUN-YY                 PIC 99.                            01060002
+   000105         010700     10 RUN-MM                 PIC 99.                            01070002
+   000106         010800     10 RUN-DD                 PIC 99.                            01080002
+   000107         010900   05  COMPILE-DATE.                                              01090002
+   000108         011000     10  COMP-DATE             PIC X(8).                          01100002
+   000109         011100     10  COMP-TIME             PIC X(12).                         01110002
+   000110         011200   05  RUN-TIME.                                                  01120002
+   000111         011300     10  RUN-HH                PIC 99.                            01130002
+   000112         011400     10  RUN-MM                PIC 99.                            01140002
+   000113         011500     10  RUN-SS                PIC 99.                            01150002
+   000114         011600     10  RUN-MS                PIC 99.                            01160002
+0
+   000116         011800 01  BINARY-NUMBERS.                                              01180002
+   000117         011900     05  BIN-4                   PIC 9(8) BINARY VALUE ZERO.      01190002 IMP
+   000118         012000     05  BIN4-X                  REDEFINES BIN-4                  01200002 117
+1ACIF Sample output Exit                                        ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page     6
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+0  000119         012100                                 PIC X(4).                        01210002
+   000120         012200     05  BIN2                    PIC 9(4) BINARY VALUE ZERO.      01220002 IMP
+   000121         012300     05  BIN2-X                  REDEFINES BIN2.                  01230002 120
+   000122         012400         10  FILLER              PIC X.                           01240002
+   000123         012500         10  BIN2-2              PIC X.                           01250002
+0
+   000125         012700 01  XDT-RECORD.                                                  01270002
+   000126         012800     05  XDT-RECLEN          PIC 9(4) BINARY.                     01280002
+   000127         012900     05  XDT-LINE            PIC X(32756).                        01290002
+1ACIF Sample output Exit                                        ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page     7
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+   000128         013000/ AFP STRUCTURED FIELD DEFINITIONS.                               01300002
+   000129         013100     COPY STRFLDS SUPPRESS.                                       01310002
+1ACIF Sample output Exit                                        ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page     8
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+   001275         013200/ PASSED PARAMETERS.                                              01320002
+   001276         013300 LINKAGE SECTION.                                                 01330002
+   001277         013400 01  OUT-PARMS.                                                   01340002
+   001278         013500     05  OUT-WORKA           POINTER.                             01350002
+   001279         013600     05  OUT-PFATTR          POINTER.                             01360002
+   001280         013700     05  OUT-RECPTR          POINTER.                             01370002
+   001281         013800     05  OUT-RECLEN          PIC 9(4) BINARY.                     01380002
+   001282         013900     05  OUT-REQUEST         PIC X.                               01390002
+   001283         014000         88  OUT-USE         VALUE X'00'.                         01400002
+   001284         014100         88  OUT-DELETE      VALUE X'01'.                         01410002
+   001285         014200     05  OUT-EOF-FLAG        PIC X.                               01420002
+   001286         014300         88  OUT-EOF         VALUE 'Y'.                           01430002
+   001287         014400         88  OUT-NOTEOF      VALUE 'N'.                           01440002
+   001288         014500                                                                  01450002
+   001289         014600 01  OUT-UAREA.                                                   01460002
+   001290         014700     05  AFPPAGOT-REC        PIC 9(8) BINARY.                     01470002
+   001291         014800     05  OUT-FIRST-FLAG      PIC X.                               01480002
+   001292         014900         88  OUT-FIRST       VALUE LOW-VALUE.                     01490002 IMP
+   001293         015000         88  OUT-NOTFIRST    VALUE HIGH-VALUE.                    01500002 IMP
+   001294         015100                                                                  01510002
+   001295         015200 01  OUT-ATTR.                                                    01520002
+   001296         015300     05  OUT-CC              PIC XXX.                             01530002
+   001297         015400     05  OUT-CCTYPE          PIC X.                               01540002
+   001298         015500         88  OUT-ANSI-CC     VALUE 'A'.                           01550002
+   001299         015600         88  OUT-MACH-CC     VALUE 'M'.                           01560002
+   001300         015700     05  OUT-CHARS           PIC X(20).                           01570002
+   001301         015800     05  OUT-FORMDEF         PIC X(8).                            01580002
+   001302         015900     05  OUT-PAGEDEF         PIC X(8).                            01590002
+   001303         016000     05  OUT-PRMODE          PIC X(8).                            01600002
+   001304         016100     05  OUT-TRC             PIC XXX.                             01610002
+   001305         016200                                                                  01620002
+   001306         016300* This is a template for the output record, pointed to by         01630002
+   001307         016400* OUT-RECPTR. The record's actual length is given by              01640002
+   001308         016500* OUT-RECLEN.                                                     01650002
+   001309         016600 01  OUT-LINE.                                                    01660002
+   001310         016700     05  OUT-CCVAL           PIC X.                               01670002
+   001311         016800     05  OUT-SFINTRO.                                             01680002
+   001312         016900         10  OUT-SFLEN       PIC 9(4) BINARY.                     01690002
+   001313         017000         10  OUT-SFTYPE      PIC XXX.                             01700002
+   001314         017100         10  OUT-SFFLAG      PIC X.                               01710002
+   001315         017200         10  OUT-SFSEQ       PIC 9(4) BINARY.                     01720002
+   001316         017300     05  OUT-SFDATA          PIC X(32751).                        01730002
+0
+   001318         017500* This is the BDT/EDT NOP record. the NOP data area must contain  01750002
+   001319         017600* a valid BDT/EDT structured field.                               01760002
+   001320         017700 01  NOP-RECORD.                                                  01770002
+   001321         017800     05  NOP-INTRODUCER.                                          01780002
+   001322         017900       10  NOP-CC            PIC X.                               01790002
+   001323         018000       10  NOP-LEN-CHR       PIC XX.                              01800002
+   001324         018100       10  NOP-RECLEN        REDEFINES NOP-LEN-CHR                01810002 1323
+   001325         018200                             PIC 9(4) BINARY.                     01820002
+   001326         018300       10  NOP-TYPE          PIC XXX.                             01830002
+   001327         018400       10  NOP-FLAG          PIC X.                               01840002
+   001328         018500       10  NOP-SEQ-CHR       PIC XX.                              01850002
+   001329         018600       10  NOP-SEQNUM        REDEFINES NOP-SEQ-CHR                01860002 1328
+   001330         018700                             PIC 9(4) BINARY.                     01870002
+   001331         018800     05  NOP-DATA.                                                01880002
+1ACIF Sample output Exit                                        ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page     9
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+0  001332         018900       10  FILLER            PIC X.                               01890002
+   001333         019000       10  NOP-XDT-LEN-CHR   PIC XX.                              01900002
+   001334         019100       10  NOP-XDT-RECLEN    REDEFINES NOP-XDT-LEN-CHR            01910002 1333
+   001335         019200                             PIC 9(4) BINARY.                     01920002
+   001336         019300       10  NOP-XDT-TYPE      PIC XXX.                             01930002
+   001337         019400           88  NOP-NOP-BDT   VALUE X'D3A8A8'.                     01940002
+   001338         019500           88  NOP-NOP-EDT   VALUE X'D3A9A8'.                     01950002
+   001339         019600       10  NOP-ARRAY         OCCURS 0 TO 26597,                   01960002
+   001340         019700                             DEPENDING ON NOP-RECLEN,             01970002 1324
+   001341         019800                             PIC X.                               01980002
+1Initialization and Main Line                                   ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    10
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+   001343         020000 PROCEDURE DIVISION USING OUT-PARMS.                              02000002 1277
+   001344         020100* make work area, attributes, and output line addressable.        02010002
+   001345         020200     SET ADDRESS OF OUT-UAREA  TO OUT-WORKA.                      02020002 IMP 1289 1278
+   001346         020300     SET ADDRESS OF OUT-ATTR   TO OUT-PFATTR.                     02030002 IMP 1295 1279
+   001347         020400     SET ADDRESS OF OUT-LINE   TO OUT-RECPTR.                     02040002 IMP 1309 1280
+   001348         020500     SET ADDRESS OF NOP-RECORD TO OUT-RECPTR.                     02050002 IMP 1320 1280
+   001349         020600* no special action is necessary at EOF.                          02060002
+   001350         020700     IF OUT-EOF                                                   02070002 1286
+   001351         020800      THEN                                                        02080002
+   001352      1  020900       DISPLAY PGMNAME, ' EOF REACHED.';                          02090002 99
+   001353      1  021000       GOBACK;                                                    02100002
+   001354         021100     END-IF.                                                      02110002
+   001355         021200     IF OUT-FIRST                                                 02120002 1292
+   001356         021300      THEN                                                        02130002
+   001357      1  021400       SET OUT-NOTFIRST TO TRUE;                                  02140002 1293
+   001358      1  021500       MOVE WHEN-COMPILED TO COMPILE-DATE;                        02150002 107
+   001359      1  021600       ACCEPT RUN-DATE FROM DATE;                                 02160002 103
+   001360      1  021700       ACCEPT RUN-TIME FROM TIME;                                 02170002 110
+   001361      1  021800       OPEN OUTPUT AFPPAGOT-FILE;                                 02180002 66
+0
+   001363      1  022000       IF NOT AFPPAGOT-OK THEN                                    02200002 93
+   001364      2  022100          DISPLAY 'AFPPAGOT  STATUS AFTER OPEN ' AFPPAGOT-STATUS; 02210002 92
+   001365      2  022200          DISPLAY ' ';                                            02220002
+   001366      2  022300          MOVE AFPPAGOT-STATUS TO RETURN-CODE;                    02230002 92 IMP IMP
+   001367      2  022400          GOBACK;                                                 02240002
+   001368      1  022500       END-IF;                                                    02250002
+   001369      1  022600       MOVE ZERO TO AFPPAGOT-REC;                                 02260002 IMP 1290
+0
+   001371         022800     END-IF.                                                      02280002
+   001372         022900     SET OUT-USE TO TRUE.                                         02290002 1283
+   001373         023000     EVALUATE OUT-SFTYPE;                                         02300002 1313
+   001374         023100      WHEN SF-NOP                                                 02310002 515
+   001375         023200* If this is the BDT/EDT NOP record, then change it to a real     02320002
+   001376         023300* BDT/EDT. All other NOPs are written to the output file unchanged02330002
+   001377      1  023400       PERFORM 0200-MAKE-BDTEDT;                                  02340002 1395
+   001378         023500      WHEN SF-BDT                                                 02350002 203
+   001379         023600      WHEN SF-EDT                                                 02360002 326
+   001380         023700* ACIF generates a BDT that should remain in the ACIF output      02370002
+   001381         023800* file, but should be removed from the AFPPAGOT output.           02380002
+   001382      1  023900        CONTINUE;                                                 02390002
+   001383         024000      WHEN SF-BPG                                                 02400002 242
+   001384      1  024100       ADD 1 TO PAGE-COUNT;                                       02410002 90
+   001385      1  024200       MOVE 0 TO LINE-COUNT;                                      02420002 91
+   001386      1  024300       CALL AFPWRITE USING OUT-LINE, OUT-RECLEN;                  02430002 89 1309 1281
+   001387         024400      WHEN OTHER                                                  02440002
+   001388      1  024500       ADD 1 TO LINE-COUNT;                                       02450002 91
+   001389      1  024600       MOVE LINE-COUNT TO OUT-SFSEQ;                              02460002 91 1315
+   001390      1  024700       CALL AFPWRITE USING OUT-LINE, OUT-RECLEN;                  02470002 89 1309 1281
+   001391         024800     END-EVALUATE.                                                02480002
+
+   001393         025000     GOBACK.                                                      02500002
+0
+   001395         025200 0200-MAKE-BDTEDT.                                                02520002
+   001396         025300* Change the NOP in the datastream to an BDT or EDT.              02530002
+   001397         025400* The NOP SFI is removed from the record. The remaining           02540002
+1Initialization and Main Line                                   ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    11
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+0  001398         025500* data is assumed to be a valid BDT/EDT.                          02550002
+   001399         025600     IF NOP-NOP-BDT OR NOP-NOP-EDT                                02560002 1337 1338
+   001400         025700      THEN                                                        02570002
+   001401         025800*      DISPLAY PGMNAME, ' OUT-RECLEN ', OUT-RECLEN,               02580002
+   001402         025900*              ' NOP-XDT-RECLEN ', NOP-XDT-RECLEN,                02590002
+   001403         026000*              ' NOP-RECORD ', NOP-RECORD;                        02600002
+   001404      1  026100       COMPUTE XDT-RECLEN = NOP-XDT-RECLEN + 1;                   02610002 126 1334
+   001405      1  026200       MOVE NOP-DATA (1:NOP-XDT-RECLEN) TO XDT-LINE;              02620002 1331 1334 127
+   001406      1  026300       CALL AFPWRITE USING XDT-LINE, XDT-RECLEN;                  02630002 89 127 126
+   001407         026400      ELSE                                                        02640002
+   001408         026500* NOPs not containing BDT/EDT are copied to output.               02650002
+   001409      1  026600       CALL AFPWRITE USING OUT-LINE, OUT-RECLEN;                  02660002 89 1309 1281
+   001410         026700     END-IF.                                                      02670002
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    12
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+   001412   1     026900 ID DIVISION.                                                     02690002
+   001413   1     027000* This routine writes a record to the exit's output file,         02700002
+   001414   1     027100* AFPPAGOT.                                                       02710002
+   001415   1     027200 PROGRAM-ID. AFPWRITE COMMON.                                     02720002
+   001416   1     027300 DATA DIVISION.                                                   02730002
+   001417   1     027400 WORKING-STORAGE SECTION.                                         02740002
+   001418   1     027500 77  AFPPAGOT-STATUS         PIC 99.                              02750002
+   001419   1     027600 LINKAGE SECTION.                                                 02760002
+   001420   1     027700 01  AFP-DATA                    PIC X(32756).                    02770002
+   001421   1     027800 01  AFP-DATA-LENGTH             PIC 9(4) BINARY.                 02780002
+-
+   001423   1     028000 PROCEDURE DIVISION USING AFP-DATA,                               02800002 1420
+   001424   1     028100                          AFP-DATA-LENGTH.                        02810002 1421
+   001425   1     028200     MOVE AFP-DATA-LENGTH TO AFPPAGOT-LENGTH.                     02820002 1421 100
+   001426   1     028300     WRITE AFPPAGOT-RECORD FROM AFP-DATA,                         02830002 70 1420
+   001427   1     028400       INVALID KEY                                                02840002
+   001428   1  1  028500        DISPLAY PGMNAME, ' OUTPUT ERROR, FILE STATUS: ',          02850002 99
+   001429   1  1  028600                AFPPAGOT-STATUS,                                  02860002 1418
+   001430   1  1  028700                MOVE AFPPAGOT-STATUS TO RETURN-CODE;              02870002 1418 IMP IMP
+   001431   1     028800     END-WRITE.                                                   02880002
+   001432   1     028900 END PROGRAM AFPWRITE.                                            02890002 1415
+
+   001434         029100 END PROGRAM ACIFOBDT.                                            02910002 3
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    13
+0An "M" preceding a data-name reference indicates that the data-name is modified by this reference.
+
+  Defined   Cross-reference of data names   References
+
+       88   ABEND-CODE
+       87   ABND-PGM
+     1420   AFP-DATA . . . . . . . . . . .  1423 1426
+     1421   AFP-DATA-LENGTH. . . . . . . .  1424 1425
+       82   AFPPAGOT-ARRAY
+       72   AFPPAGOT-CC
+       81   AFPPAGOT-DATA
+       95   AFPPAGOT-EOF
+       94   AFPPAGOT-EOF-FLAG
+       97   AFPPAGOT-ERROR
+       96   AFPPAGOT-ERROR-FLAG
+       66   AFPPAGOT-FILE. . . . . . . . .  60 1361
+       77   AFPPAGOT-FLAG
+       84   AFPPAGOT-INDX
+       71   AFPPAGOT-INTRODUCER
+       73   AFPPAGOT-LEN-CHR . . . . . . .  74
+      100   AFPPAGOT-LENGTH. . . . . . . .  69 M1425
+       93   AFPPAGOT-OK. . . . . . . . . .  1363
+     1290   AFPPAGOT-REC . . . . . . . . .  M1369
+       74   AFPPAGOT-RECLEN. . . . . . . .  83
+       70   AFPPAGOT-RECORD. . . . . . . .  M1426
+       78   AFPPAGOT-SEQ-CHR . . . . . . .  79
+       79   AFPPAGOT-SEQNUM
+       92   AFPPAGOT-STATUS. . . . . . . .  62 1364 1366
+     1418   AFPPAGOT-STATUS. . . . . . . .  1429 1430
+       76   AFPPAGOT-TYPE
+       89   AFPWRITE . . . . . . . . . . .  1386 1390 1406 1409
+      117   BIN-4. . . . . . . . . . . . .  118
+      116   BINARY-NUMBERS
+      120   BIN2 . . . . . . . . . . . . .  121
+      121   BIN2-X
+      123   BIN2-2
+      118   BIN4-X
+     1218   CAT-AEG
+     1184   CAT-AREA
+     1192   CAT-CFONT
+     1186   CAT-COLATT
+     1196   CAT-CONTAIN
+     1210   CAT-DATARSRC
+     1212   CAT-DOCENV
+     1202   CAT-DOCUMENT
+     1222   CAT-FORMAP
+     1208   CAT-GRAPHIC
+     1232   CAT-ID . . . . . . . . . . . .  1230
+     1188   CAT-IMIMAGE
+     1200   CAT-INDEX
+     1231   CAT-INDX
+     1190   CAT-MEDIUM
+     1220   CAT-MEDMAP
+     1181   CAT-NAMES. . . . . . . . . . .  1228
+     1216   CAT-OEG
+     1226   CAT-OVERLAY
+     1206   CAT-PAGE
+     1204   CAT-PAGEGRP
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    14
+0 Defined   Cross-reference of data names   References
+
+0    1194   CAT-PELEM
+     1224   CAT-POVLY
+     1198   CAT-PRESENT
+     1182   CAT-PSEG
+     1214   CAT-RESGRP
+     1228   CAT-TABLE
+      108   COMP-DATE
+      109   COMP-TIME
+      107   COMPILE-DATE . . . . . . . . .  M1358
+      102   DATE-DATA
+     1135   FQN-ATTR
+     1161   FQN-BDI
+     1147   FQN-BDT
+     1157   FQN-BMM
+     1163   FQN-BOR
+     1155   FQN-BPG
+     1133   FQN-BRG
+     1159   FQN-CFN
+     1151   FQN-CPG
+     1171   FQN-DOER
+     1143   FQN-DOFB
+     1145   FQN-DOFL
+     1165   FQN-DOIR
+     1153   FQN-FCS
+     1127   FQN-FFN
+     1129   FQN-FTN
+     1125   FQN-GID
+     1177   FQN-ID . . . . . . . . . . . .  1175
+     1167   FQN-IGID
+     1176   FQN-INDX
+     1141   FQN-MTM
+     1124   FQN-NAMES. . . . . . . . . . .  1173
+     1169   FQN-OOID
+     1139   FQN-PGRP
+     1122   FQN-PREFIX
+     1137   FQN-PREL
+     1131   FQN-RHR
+     1149   FQN-ROR
+     1173   FQN-TABLE
+      694   GBAR
+      700   GBCIMG
+      697   GBIMG
+      703   GBOX
+      706   GCBOX
+      712   GCCHST
+      739   GCFLARC
+      733   GCFLT
+      709   GCHST
+      748   GCLINE
+      754   GCMRK
+      715   GCOMT
+      763   GCPARC
+      769   GCRLINE
+      718   GEAR
+      721   GEIMG
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    15
+0 Defined   Cross-reference of data names   References
+
+0     724   GEPROL
+      736   GFARC
+      730   GFLT
+      742   GIMD
+      745   GLINE
+      751   GMRK
+      757   GNOP1
+      760   GPARC
+      851   GR-AREA-BOUNDARIES
+      852   GR-AREA-BOUNDARY
+      853   GR-AREA-NOBOUNDARY
+      859   GR-CDIR-B2T
+      855   GR-CDIR-DFLT
+      856   GR-CDIR-L2R
+      858   GR-CDIR-R2L
+      857   GR-CDIR-T2B
+      854   GR-CHAR-DIRECTION
+      860   GR-COLOR
+      862   GR-COLOR-BLUE
+      866   GR-COLOR-CYAN
+      861   GR-COLOR-DFLT
+      865   GR-COLOR-GREEN
+      864   GR-COLOR-MAGENTA
+      869   GR-COLOR-MEDIUM
+      868   GR-COLOR-PDFLT
+      863   GR-COLOR-RED
+      867   GR-COLOR-YELLOW
+      878   GR-ECOLOR-BLACK
+      872   GR-ECOLOR-BLUE
+      879   GR-ECOLOR-BROWN
+      876   GR-ECOLOR-CYAN
+      871   GR-ECOLOR-DFLT
+      875   GR-ECOLOR-GREEN
+      874   GR-ECOLOR-MAGENTA
+      881   GR-ECOLOR-MEDIUM
+      880   GR-ECOLOR-PDFLT
+      873   GR-ECOLOR-RED
+      877   GR-ECOLOR-YELLOW
+      870   GR-EXTENDED-COLOR
+      844   GR-ID. . . . . . . . . . . . .  840
+      841   GR-ID-INDX
+      928   GR-IMAGE-MAPPING
+      934   GR-IMAGE-ROTATION
+      843   GR-LENGTH
+      889   GR-LINE-DASHDDOT
+      886   GR-LINE-DASHDOT
+      887   GR-LINE-DBLDOT
+      883   GR-LINE-DFLT
+      884   GR-LINE-DOTTED
+      891   GR-LINE-INVISIBLE
+      888   GR-LINE-LDASH
+      885   GR-LINE-SDASH
+      890   GR-LINE-SOLID
+      892   GR-LINE-THICKNESS
+      882   GR-LINE-TYPE
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    16
+0 Defined   Cross-reference of data names   References
+
+0     931   GR-MAP-CENTER
+      933   GR-MAP-DOUBLE-DOT
+      932   GR-MAP-PEL
+      930   GR-MAP-SCALE
+      929   GR-MAP-TRIM
+      908   GR-MARK-BLANK
+      898   GR-MARK-CROSS
+      897   GR-MARK-DFLT
+      900   GR-MARK-DIAMOND
+      906   GR-MARK-DOT
+      904   GR-MARK-FDIAMOND
+      905   GR-MARK-FSQUARE
+      899   GR-MARK-PLUS
+      907   GR-MARK-SMCIRCLE
+      901   GR-MARK-SQUARE
+      902   GR-MARK-6PT-STAR
+      903   GR-MARK-9PT-STAR
+      896   GR-MARKER-SYMBOL
+      690   GR-NAMES . . . . . . . . . . .  838
+      927   GR-PATT-BLANK
+      910   GR-PATT-DFLT
+      911   GR-PATT-GREY-1
+      912   GR-PATT-GREY-2
+      913   GR-PATT-GREY-3
+      914   GR-PATT-GREY-4
+      915   GR-PATT-GREY-5
+      916   GR-PATT-GREY-6
+      917   GR-PATT-GREY-7
+      918   GR-PATT-GREY-8
+      920   GR-PATT-HLINES
+      921   GR-PATT-L2R-DIAG1
+      922   GR-PATT-L2R-DIAG2
+      925   GR-PATT-NONE
+      926   GR-PATT-SOLID
+      923   GR-PATT-T2B-DIAG1
+      924   GR-PATT-T2B-DIAG2
+      919   GR-PATT-VLINES
+      909   GR-PATTERN-SYMBOL
+      935   GR-ROT-00
+      937   GR-ROT-180
+      938   GR-ROT-270
+      936   GR-ROT-90
+      838   GR-TABLE
+      893   GR-THIK-DFLT
+      894   GR-THIK-NORMAL
+      895   GR-THIK-THICK
+      842   GR-VALUE
+      691   GRBSI
+      727   GRESI
+      766   GRLINE
+      695   GRN-GBAR
+      701   GRN-GBCIMG
+      698   GRN-GBIMG
+      704   GRN-GBOX
+      707   GRN-GCBOX
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    17
+0 Defined   Cross-reference of data names   References
+
+0     713   GRN-GCCHST
+      740   GRN-GCFARC
+      734   GRN-GCFLT
+      710   GRN-GCHST
+      749   GRN-GCLINE
+      755   GRN-GCMRK
+      716   GRN-GCOMT
+      764   GRN-GCPARC
+      770   GRN-GCRLINE
+      719   GRN-GEAR
+      722   GRN-GEIMG
+      725   GRN-GEPROL
+      737   GRN-GFARC
+      731   GRN-GFLT
+      743   GRN-GIMD
+      746   GRN-GLINE
+      752   GRN-GMRK
+      758   GRN-GNOP1
+      761   GRN-GPARC
+      692   GRN-GRBSI
+      728   GRN-GRESI
+      767   GRN-GRLINE
+      776   GRN-GSAP
+      779   GRN-GSBMX
+      782   GRN-GSCA
+      785   GRN-GSCC
+      788   GRN-GSCD
+      797   GRN-GSCH
+      800   GRN-GSCOL
+      803   GRN-GSCP
+      791   GRN-GSCR
+      794   GRN-GSCS
+      806   GRN-GSECOL
+      773   GRN-GSGCH
+      809   GRN-GSLT
+      812   GRN-GSLW
+      815   GRN-GSMC
+      818   GRN-GSMP
+      821   GRN-GSMS
+      824   GRN-GSMT
+      827   GRN-GSMX
+      836   GRN-GSPIK
+      830   GRN-GSPS
+      833   GRN-GSPT
+      775   GSAP
+      778   GSBMX
+      781   GSCA
+      784   GSCC
+      787   GSCD
+      796   GSCH
+      799   GSCOL
+      802   GSCP
+      790   GSCR
+      793   GSCS
+      805   GSECOL
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    18
+0 Defined   Cross-reference of data names   References
+
+0     772   GSGCH
+      808   GSLT
+      811   GSLW
+      814   GSMC
+      817   GSMP
+      820   GSMS
+      823   GSMT
+      826   GSMX
+      835   GSPIK
+      829   GSPS
+      832   GSPT
+       91   LINE-COUNT . . . . . . . . . .  M1385 M1388 1389
+     1273   MCF2-RG-LEN-LEN
+     1339   NOP-ARRAY
+     1322   NOP-CC
+     1331   NOP-DATA . . . . . . . . . . .  1405
+     1327   NOP-FLAG
+     1321   NOP-INTRODUCER
+     1323   NOP-LEN-CHR. . . . . . . . . .  1324
+     1337   NOP-NOP-BDT. . . . . . . . . .  1399
+     1338   NOP-NOP-EDT. . . . . . . . . .  1399
+     1324   NOP-RECLEN . . . . . . . . . .  1340
+     1320   NOP-RECORD . . . . . . . . . .  1348
+     1328   NOP-SEQ-CHR. . . . . . . . . .  1329
+     1329   NOP-SEQNUM
+     1326   NOP-TYPE
+     1333   NOP-XDT-LEN-CHR. . . . . . . .  1334
+     1334   NOP-XDT-RECLEN . . . . . . . .  1404 1405
+     1336   NOP-XDT-TYPE
+     1237   OBJTYP-ATTRIB
+     1245   OBJTYP-BEGIN
+     1243   OBJTYP-CONTROL
+     1239   OBJTYP-COPYCNT
+     1263   OBJTYP-DATA
+     1241   OBJTYP-DESCR
+     1247   OBJTYP-END
+     1269   OBJTYP-ID. . . . . . . . . . .  1267
+     1253   OBJTYP-INCLUDE
+     1268   OBJTYP-INDX
+     1261   OBJTYP-LINK
+     1249   OBJTYP-MAP
+     1257   OBJTYP-MIGR
+     1236   OBJTYP-NAMES . . . . . . . . .  1265
+     1251   OBJTYP-POSN
+     1255   OBJTYP-TABLE
+     1265   OBJTYP-TABLE
+     1259   OBJTYP-VARIABLE
+     1298   OUT-ANSI-CC
+     1295   OUT-ATTR . . . . . . . . . . .  1346
+     1296   OUT-CC
+     1297   OUT-CCTYPE
+     1310   OUT-CCVAL
+     1300   OUT-CHARS
+     1284   OUT-DELETE
+     1286   OUT-EOF. . . . . . . . . . . .  1350
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    19
+0 Defined   Cross-reference of data names   References
+
+0    1285   OUT-EOF-FLAG
+     1292   OUT-FIRST. . . . . . . . . . .  1355
+     1291   OUT-FIRST-FLAG
+     1301   OUT-FORMDEF
+     1309   OUT-LINE . . . . . . . . . . .  1347 1386 1390 1409
+     1299   OUT-MACH-CC
+     1287   OUT-NOTEOF
+     1293   OUT-NOTFIRST . . . . . . . . .  M1357
+     1302   OUT-PAGEDEF
+     1277   OUT-PARMS. . . . . . . . . . .  1343
+     1279   OUT-PFATTR . . . . . . . . . .  1346
+     1303   OUT-PRMODE
+     1281   OUT-RECLEN . . . . . . . . . .  1386 1390 1409
+     1280   OUT-RECPTR . . . . . . . . . .  1347 1348
+     1282   OUT-REQUEST
+     1316   OUT-SFDATA
+     1314   OUT-SFFLAG
+     1311   OUT-SFINTRO
+     1312   OUT-SFLEN
+     1315   OUT-SFSEQ. . . . . . . . . . .  M1389
+     1313   OUT-SFTYPE . . . . . . . . . .  1373
+     1304   OUT-TRC
+     1289   OUT-UAREA. . . . . . . . . . .  1345
+     1283   OUT-USE. . . . . . . . . . . .  M1372
+     1278   OUT-WORKA. . . . . . . . . . .  1345
+       90   PAGE-COUNT . . . . . . . . . .  M1384
+       99   PGMNAME. . . . . . . . . . . .  1352 1428
+        0   RETURN-CODE. . . . . . . . . .  1366 M1366 1430 M1430
+      103   RUN-DATE . . . . . . . . . . .  M1359
+      106   RUN-DD
+      111   RUN-HH
+      105   RUN-MM
+      112   RUN-MM
+      114   RUN-MS
+      113   RUN-SS
+      110   RUN-TIME . . . . . . . . . . .  M1360
+      104   RUN-YY
+      170   SF-BAG
+      173   SF-BBC
+      176   SF-BCA
+      179   SF-BCF
+      182   SF-BCP
+      185   SF-BCT
+      188   SF-BDA
+      191   SF-BDD
+      194   SF-BDG
+      197   SF-BDI
+      200   SF-BDM
+      203   SF-BDT . . . . . . . . . . . .  1378
+      206   SF-BDX
+      209   SF-BFG
+      212   SF-BFM
+      215   SF-BFN
+      218   SF-BGR
+      221   SF-BII
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    20
+0 Defined   Cross-reference of data names   References
+
+0     224   SF-BIM
+      227   SF-BMM
+      230   SF-BMO
+      233   SF-BNG
+      236   SF-BOC
+      239   SF-BOG
+      242   SF-BPG . . . . . . . . . . . .  1383
+      245   SF-BPM
+      248   SF-BPS
+      251   SF-BPT
+      257   SF-BRG
+      254   SF-BRS
+      260   SF-CAT
+      167   SF-CC
+      263   SF-CCP
+      266   SF-CDD
+      269   SF-CFC
+      272   SF-CFI
+      275   SF-CPC
+      278   SF-CPD
+      281   SF-CPI
+      284   SF-CTC
+      287   SF-CTD
+      290   SF-CTX
+      296   SF-DCF
+      293   SF-DXD
+      299   SF-EAG
+      302   SF-EBC
+      305   SF-ECA
+      308   SF-ECF
+      311   SF-ECP
+      314   SF-ECT
+      317   SF-EDG
+      320   SF-EDI
+      323   SF-EDM
+      326   SF-EDT . . . . . . . . . . . .  1379
+      329   SF-EDX
+      332   SF-EFG
+      335   SF-EFM
+      338   SF-EFN
+      341   SF-EGR
+      344   SF-EII
+      347   SF-EIM
+      350   SF-EMM
+      353   SF-EMO
+      356   SF-ENG
+      359   SF-EOC
+      362   SF-EOG
+      365   SF-EPG
+      368   SF-EPM
+      371   SF-EPS
+      374   SF-EPT
+      377   SF-ER
+      380   SF-ERG
+      383   SF-FDS
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    21
+0 Defined   Cross-reference of data names   References
+
+0     386   SF-FDX
+      389   SF-FGD
+      392   SF-FNC
+      395   SF-FND
+      398   SF-FNG
+      401   SF-FNI
+      404   SF-FNM
+      407   SF-FNO
+      410   SF-FNP
+      413   SF-GAD
+      416   SF-GDD
+      419   SF-ICP
+      562   SF-ID. . . . . . . . . . . . .  559
+      560   SF-ID-INDX
+      422   SF-IDD
+      425   SF-IDM
+      428   SF-IEL
+      431   SF-IID
+      434   SF-IMM
+      437   SF-IOB
+      440   SF-IOC
+      443   SF-IPD
+      446   SF-IPO
+      449   SF-IPS
+      452   SF-IRD
+      455   SF-LLE
+      458   SF-LNC
+      461   SF-LND
+      464   SF-MBC
+      467   SF-MCA
+      470   SF-MCC
+      473   SF-MCF
+      476   SF-MCF2
+      479   SF-MDD
+      482   SF-MDR
+      485   SF-MFC
+      488   SF-MGO
+      491   SF-MIO
+      494   SF-MMC
+      497   SF-MMO
+      500   SF-MMT
+      506   SF-MPG
+      503   SF-MPO
+      509   SF-MPS
+      512   SF-MSU
+      168   SF-NAMES . . . . . . . . . . .  557
+      515   SF-NOP . . . . . . . . . . . .  1374
+      518   SF-OBD
+      521   SF-OBP
+      524   SF-OCD
+      527   SF-PFC
+      530   SF-PGD
+      533   SF-PGP
+      536   SF-PGP2
+      539   SF-PMC
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    22
+0 Defined   Cross-reference of data names   References
+
+0     542   SF-PPO
+      545   SF-PTD
+      548   SF-PTD2
+      551   SF-PTX
+      557   SF-TABLE
+      554   SF-TLE
+      561   SF-VALUE
+      171   SFN-BAG
+      174   SFN-BBC
+      177   SFN-BCA
+      180   SFN-BCF
+      183   SFN-BCP
+      186   SFN-BCT
+      189   SFN-BDA
+      192   SFN-BDD
+      195   SFN-BDG
+      198   SFN-BDI
+      201   SFN-BDM
+      204   SFN-BDT
+      207   SFN-BDX
+      210   SFN-BFG
+      213   SFN-BFM
+      216   SFN-BFN
+      219   SFN-BGR
+      222   SFN-BII
+      225   SFN-BIM
+      228   SFN-BMM
+      231   SFN-BMO
+      234   SFN-BNG
+      237   SFN-BOC
+      240   SFN-BOG
+      243   SFN-BPG
+      246   SFN-BPM
+      249   SFN-BPS
+      252   SFN-BPT
+      258   SFN-BRG
+      255   SFN-BRS
+      261   SFN-CCP
+      264   SFN-CCP
+      267   SFN-CDD
+      270   SFN-CFC
+      273   SFN-CFI
+      276   SFN-CPC
+      279   SFN-CPD
+      282   SFN-CPI
+      285   SFN-CTC
+      288   SFN-CTD
+      291   SFN-CTX
+      297   SFN-DCF
+      294   SFN-DXD
+      300   SFN-EAG
+      303   SFN-EBC
+      306   SFN-ECA
+      309   SFN-ECF
+      312   SFN-ECP
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    23
+0 Defined   Cross-reference of data names   References
+
+0     315   SFN-ECT
+      318   SFN-EDG
+      321   SFN-EDI
+      324   SFN-EDM
+      327   SFN-EDT
+      330   SFN-EDX
+      333   SFN-EFG
+      336   SFN-EFM
+      339   SFN-EFN
+      342   SFN-EGR
+      345   SFN-EII
+      348   SFN-EIM
+      351   SFN-EMM
+      354   SFN-EMO
+      357   SFN-ENG
+      360   SFN-EOC
+      363   SFN-EOG
+      366   SFN-EPG
+      369   SFN-EPM
+      372   SFN-EPS
+      375   SFN-EPT
+      378   SFN-ER
+      381   SFN-ERG
+      384   SFN-FDS
+      387   SFN-FDX
+      390   SFN-FGD
+      393   SFN-FNC
+      396   SFN-FND
+      399   SFN-FNG
+      402   SFN-FNI
+      405   SFN-FNM
+      408   SFN-FNO
+      411   SFN-FNP
+      414   SFN-GAD
+      417   SFN-GDD
+      420   SFN-ICP
+      423   SFN-IDD
+      426   SFN-IDM
+      429   SFN-IEL
+      432   SFN-IID
+      435   SFN-IMM
+      438   SFN-IOB
+      441   SFN-IOC
+      444   SFN-IPD
+      447   SFN-IPO
+      450   SFN-IPS
+      453   SFN-IRD
+      456   SFN-LLE
+      459   SFN-LNC
+      462   SFN-LND
+      465   SFN-MBC
+      468   SFN-MCA
+      471   SFN-MCC
+      474   SFN-MCF
+      477   SFN-MCF2
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    24
+0 Defined   Cross-reference of data names   References
+
+0     480   SFN-MDD
+      483   SFN-MDR
+      486   SFN-MFC
+      489   SFN-MGO
+      492   SFN-MIO
+      495   SFN-MMC
+      498   SFN-MMO
+      501   SFN-MMT
+      507   SFN-MPG
+      504   SFN-MPO
+      510   SFN-MPS
+      513   SFN-MSU
+      516   SFN-NOP
+      519   SFN-OBD
+      522   SFN-OBP
+      525   SFN-OCD
+      528   SFN-PFC
+      531   SFN-PGD
+      534   SFN-PGP
+      537   SFN-PGP2
+      540   SFN-PMC
+      543   SFN-PPO
+      546   SFN-PTD
+      549   SFN-PTD2
+      552   SFN-PTX
+      555   SFN-TLE
+      151   STRUCTURED-FIELDS
+      574   TC-AMB
+      575   TC-AMB-C
+      578   TC-AMI
+      579   TC-AMI-C
+      582   TC-BLN
+      583   TC-BLN-C
+      586   TC-BSU
+      587   TC-BSU-C
+      590   TC-CCTL
+      591   TC-CCTL-C
+      594   TC-DBR
+      595   TC-DBR-C
+      598   TC-DIR
+      599   TC-DIR-C
+      602   TC-ESC
+      603   TC-ESC-C
+      606   TC-ESU
+      607   TC-ESU-C
+      678   TC-ID. . . . . . . . . . . . .  672
+      673   TC-ID-INDX
+      674   TC-LENGTH
+      676   TC-LENGTH-C
+      573   TC-NAMES . . . . . . . . . . .  670
+      610   TC-NOP
+      611   TC-NOP-C
+      614   TC-OVS
+      615   TC-OVS-C
+      618   TC-RMB
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    25
+0 Defined   Cross-reference of data names   References
+
+0     619   TC-RMB-C
+      622   TC-RMI
+      623   TC-RMI-C
+      626   TC-RPS
+      627   TC-RPS-C
+      630   TC-SBI
+      631   TC-SBI-C
+      634   TC-SCFL
+      635   TC-SCFL-C
+      638   TC-SEC
+      639   TC-SEC-C
+      642   TC-SIA
+      643   TC-SIA-C
+      646   TC-SIM
+      647   TC-SIM-C
+      650   TC-STC
+      651   TC-STC-C
+      654   TC-STO
+      655   TC-STO-C
+      658   TC-SVI
+      659   TC-SVI-C
+      670   TC-TABLE
+      662   TC-TRN
+      663   TC-TRN-C
+      666   TC-USC
+      667   TC-USC-C
+      675   TC-VALUE
+      677   TC-VALUE-C
+      576   TCN-AMB
+      580   TCN-AMI
+      584   TCN-BLN
+      588   TCN-BSU
+      592   TCN-CCT
+      596   TCN-DBR
+      600   TCN-DIR
+      604   TCN-ESC
+      608   TCN-ESU
+      612   TCN-NOP
+      616   TCN-OVS
+      620   TCN-RMB
+      624   TCN-RMI
+      628   TCN-RPS
+      632   TCN-SBI
+      636   TCN-SCFL
+      640   TCN-SEC
+      644   TCN-SIA
+      648   TCN-SIM
+      652   TCN-STC
+      656   TCN-STO
+      660   TCN-SVI
+      664   TCN-TRN
+      668   TCN-USC
+     1010   TR-AREADF
+     1076   TR-ATTQUAL
+      989   TR-ATVAL
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    26
+0 Defined   Cross-reference of data names   References
+
+0     986   TR-BYTEOF
+     1022   TR-BYTEX
+      983   TR-CHAROT
+     1070   TR-COLFID
+     1013   TR-COLSPF
+     1043   TR-CRC
+     1040   TR-DATETIME
+     1064   TR-DATIM
+      992   TR-DESPOS
+     1103   TR-DOFDSC
+     1016   TR-ENCOD
+      974   TR-ERLID
+      968   TR-FCGCSID
+     1100   TR-FINFID
+     1091   TR-FINOP
+      962   TR-FNTDSC
+     1073   TR-FNTFID
+     1088   TR-FNTRES
+      950   TR-FQN
+      947   TR-GCSGID
+     1034   TR-HSCALE
+     1115   TR-ID
+      959   TR-INTCHG
+     1113   TR-LENGTH
+      995   TR-MEDEJ
+     1097   TR-MEDFID
+     1052   TR-MEDORI
+     1061   TR-MIXRUL
+      953   TR-MPO
+      946   TR-NAMES . . . . . . . . . . .  1109
+     1007   TR-OBJASZ
+     1037   TR-OBJCNT
+     1031   TR-OBJOFF
+     1046   TR-OBJORIG
+      971   TR-OBJTYPE
+      956   TR-OCT
+      965   TR-OFS
+     1019   TR-PGMAP
+     1079   TR-PGPOS
+      998   TR-POCP
+     1082   TR-PRMVAL
+     1085   TR-PRSCTL
+     1055   TR-RESINC
+     1058   TR-RESMIX
+     1001   TR-RESUAT
+      977   TR-RLID
+      980   TR-SECNUM
+     1028   TR-SFEX
+     1025   TR-SFOF
+     1109   TR-TABLE
+     1067   TR-TONSAV
+     1094   TR-TXDFID
+     1049   TR-UCOMMENT
+     1004   TR-UOM
+     1106   TR-UP3IOP
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    27
+0 Defined   Cross-reference of data names   References
+
+0    1114   TR-VALUE . . . . . . . . . . .  1111
+     1112   TR-VALUE-INDX
+     1011   TRN-AREADF
+     1077   TRN-ATTQUAL
+      990   TRN-ATVAL
+      987   TRN-BYTEX
+     1023   TRN-BYTEX
+      984   TRN-CHAROT
+     1071   TRN-COLFID
+     1014   TRN-COLSPF
+     1044   TRN-CRC
+     1041   TRN-DATETIME
+     1065   TRN-DATIM
+      993   TRN-DESPOS
+     1104   TRN-DOFDSC
+     1017   TRN-ENCOD
+      975   TRN-ERLIB
+      969   TRN-FCGCSID
+     1101   TRN-FINFID
+     1092   TRN-FINOP
+      963   TRN-FNTDSC
+     1074   TRN-FNTFID
+     1089   TRN-FNTRES
+      951   TRN-FQN
+      948   TRN-GCSGID
+     1035   TRN-HSCALE
+      960   TRN-INTCHG
+      996   TRN-MEDEJ
+     1098   TRN-MEDFID
+     1053   TRN-MEDORI
+     1062   TRN-MIXRUL
+      954   TRN-MPO
+     1008   TRN-OBJASZ
+     1038   TRN-OBJCNT
+     1032   TRN-OBJOFF
+     1047   TRN-OBJORIG
+      972   TRN-OBJTYPE
+      957   TRN-OCT
+      966   TRN-OFS
+     1020   TRN-PGMAP
+     1080   TRN-PGPOS
+      999   TRN-POCP
+     1083   TRN-PRMVAL
+     1086   TRN-PRSCTL
+     1056   TRN-RESINC
+     1059   TRN-RESMIX
+     1002   TRN-RESUAT
+      978   TRN-RLID
+      981   TRN-SECNUM
+     1029   TRN-SFEX
+     1026   TRN-SFOF
+     1068   TRN-TONSAV
+     1095   TRN-TXTFID
+     1050   TRN-UCOMMENT
+     1005   TRN-UOM
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    28
+0 Defined   Cross-reference of data names   References
+
+0    1107   TRN-UP3IOP
+      127   XDT-LINE . . . . . . . . . . .  M1405 1406
+      126   XDT-RECLEN . . . . . . . . . .  M1404 1406
+      125   XDT-RECORD
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    29
+0Context usage is indicated by the letter preceding a procedure-name reference.
+ These letters and their meanings are:
+     A = ALTER (procedure-name)
+     D = GO TO (procedure-name) DEPENDING ON
+     E = End of range of (PERFORM) through (procedure-name)
+     G = GO TO (procedure-name)
+     P = PERFORM (procedure-name)
+     T = (ALTER) TO PROCEED TO (procedure-name)
+     U = USE FOR DEBUGGING (procedure-name)
+
+  Defined   Cross-reference of procedures   References
+
+     1395   0200-MAKE-BDTEDT . . . . . . .  P1377
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    30
+0 Defined   Cross-reference of programs     References
+
+        3   ACIFOBDT . . . . . . . . . . .  1434
+     1415   AFPWRITE . . . . . . . . . . .  1432
+1WRITE AFPDS RECORD TO FILE                                     ACIFOBDT  Date 12/20/2019  Time 11:03:51   Page    31
+0
+          COPY/BASIS cross-reference of text-names, library names and dataset information
+
+  Text-name Library   File name                                    Concat   ISPF statistics
+  (Member)  (DDNAME)  (Dataset name)                               Level    Created         Changed
+
+  STRFLDS   SYSLIB    HOWARDT.ACIF.EXITSRC                           0     1993/07/06   2019/10/24 15:08:43
+
+-* Statistics for COBOL program ACIFOBDT:
+ *    Source records = 1434
+ *    Data Division statements = 818
+ *    Procedure Division statements = 39
+ *    Generated COBOL statements = 0
+ *    Program complexity factor = 43
+0End of compilation 1,  program ACIFOBDT,  no statements flagged.
+0Return code 0

@@ -1,0 +1,307 @@
+1PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190707                 Date 12/20/2019  Time 11:03:57   Page     1
+0PROCESS(CBL) statements:
+  PROCESS DYNAM NUMPROC(PFD) TRUNC(OPT)           NOSEQ     RENT
+0Options in effect:
+  NOADATA
+    ADV
+    AFP(NOVOLATILE)
+    QUOTE
+    ARCH(7)
+    ARITH(COMPAT)
+  NOAWO
+  NOBLOCK0
+    BUFSIZE(4096)
+  NOCICS
+    CODEPAGE(1140)
+  NOCOMPILE(S)
+  NOCOPYLOC
+  NOCOPYRIGHT
+  NOCURRENCY
+    DATA(31)
+    DBCS
+  NODECK
+  NODEFINE
+  NODIAGTRUNC
+    DISPSIGN(COMPAT)
+  NODLL
+  NODUMP
+    DYNAM
+  NOEXIT
+  NOEXPORTALL
+  NOFASTSRT
+    FLAG(I,I)
+  NOFLAGSTD
+    HGPR(PRESERVE)
+  NOINITCHECK
+  NOINITIAL
+    INLINE
+    INTDATE(ANSI)
+    LANGUAGE(EN)
+    LINECOUNT(60)
+  NOLIST
+  NOMAP
+    MAXPCF(100000)
+  NOMDECK
+  NONAME
+    NSYMBOL(NATIONAL)
+  NONUMBER
+  NONUMCHECK
+    NUMPROC(PFD)
+    OBJECT
+  NOOFFSET
+    OPTIMIZE(0)
+    OUTDD(SYSOUT)
+  NOPARMCHECK
+    PGMNAME(COMPAT)
+    QUALIFY(COMPAT)
+    RENT
+    RMODE(AUTO)
+1PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190707                 Date 12/20/2019  Time 11:03:57   Page     2
+0 NORULES
+  NOSERVICE
+  NOSEQUENCE
+    SOURCE
+    SPACE(1)
+  NOSQL
+    SQLCCSID
+  NOSQLIMS
+  NOSSRANGE
+  NOSTGOPT
+    SUPPRESS
+  NOTERM
+  NOTEST(NODWARF,NOSOURCE,NOSEPARATE)
+  NOTHREAD
+    TRUNC(OPT)
+  NOVBREF
+    VLR(STANDARD)
+    VSAMOPENFS(COMPAT)
+  NOWORD
+    XMLPARSE(XMLSS)
+    XREF(FULL)
+    ZONEDATA(PFD)
+    ZWB
+1PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190707       ACSTCHR   Date 12/20/2019  Time 11:03:57   Page     3
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+0  000001         000200* LAST UPDATE ON 9 Apr 2018 AT 15:37:17 BY  HOWARDT VERSION 01   *
+   000002         000300 ID DIVISION.
+   000003         000400 PROGRAM-ID. ACSTCHR.
+   000004         000500 AUTHOR. TURETZKY--HYDRA.
+   000005         000600 INSTALLATION. IBM BOULDER PROGRAMMING CENTER.
+   000006         000700               This program is a sample exit for ACIF
+   000007         000800               (APKACIF,5648-062) demonstrating the use of the
+   000008         000900               ACIF input exit.
+   000009         001000
+   000010         001100               In order to use this exit, include the control
+   000011         001200               INPEXIT=ACSTCHR to enable this exit, and include
+   000012         001300               the load module in a dataset referenced in STEPLIB
+   000013         001400               or elsewhere in the module search order.
+   000014         001500
+   000015         001600               This program strips the first character of each
+   000016         001700               record in the input file, provided it is the
+   000017         001800               character zero. Records are passed into the exit,
+   000018         001900               the first byte is tested for zero, and the record
+   000019         002000               returned with the length adjusted.
+   000020         002100
+   000021         002200               This program must either be compiled with the
+   000022         002300               NORENT option or linked with IGZOPT with the
+   000023         002400               RTEREUS option.  (See VS COBOL II Application
+   000024         002500               Programming Guide, SC26-4045).
+   000025         002600
+   000026         002700 DATE-WRITTEN. 11 May 98.
+   000027         002800 DATE-COMPILED. 12/20/19.
+   000028         002900 SECURITY. IBM SAMPLE CODE ONLY.
+   000029         003000*/**************************************************************/
+   000030         003100*/*   COPYRIGHT (C) 1993,2007 IBM CORPORATION                  */
+   000031         003200*/*   COPYRIGHT (C) 2007,2018 RICOH COMPANY, LTD               */
+   000032         003300*/*                                                            */
+   000033         003400*/*   Permission to use, copy, modify, and distribute          */
+   000034         003500*/*   this software for any purpose with or without fee        */
+   000035         003600*/*   is hereby granted, provided that the above               */
+   000036         003700*/*   copyright notices appear in all copies.                  */
+   000037         003800*/*                                                            */
+   000038         003900*/*   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY       */
+   000039         004000*/*   OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT       */
+   000040         004100*/*   LIMITED TO THE WARRANTIES OF MERCHANTABILITY,            */
+   000041         004200*/*   FITNESS FOR A PARTICULAR PURPOSE AND                     */
+   000042         004300*/*   NONINFRINGEMENT.  IN NO EVENT SHALL RICOH, RICOH         */
+   000043         004400*/*   SUBSIDIARIES, ANY OF ITS SUPPLIERS OR ANY OF THE         */
+   000044         004500*/*   OTHER COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,         */
+   000045         004600*/*   DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF      */
+   000046         004700*/*   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF        */
+   000047         004800*/*   OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR         */
+   000048         004900*/*   OTHER DEALINGS IN THE SOFTWARE.                          */
+   000049         005000*/**************************************************************/
+1ACIF Strip Character Input Exit                                ACSTCHR   Date 12/20/2019  Time 11:03:57   Page     4
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+   000051         005200 ENVIRONMENT DIVISION.
+   000052         005300 CONFIGURATION SECTION.
+   000053         005400 SOURCE-COMPUTER. IBM-370.
+   000054         005500 OBJECT-COMPUTER. IBM-370.
+1ACIF Strip Character Input Exit                                ACSTCHR   Date 12/20/2019  Time 11:03:57   Page     5
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+   000056         005700 DATA DIVISION.
+   000057         005800 WORKING-STORAGE SECTION.
+   000058         005900 77  PGMNAME                 PIC X(8) VALUE 'ACSTCHR'.
+   000059         006000 77  ABND-PGM                PIC X(8) VALUE 'CEE3DMP'.            !@01
+   000060         006100 77  ABEND-CODE              PIC 9(4) BINARY VALUE 12.
+   000061         006110 77  ABEND-OPTS              PIC X(255)                           !@01
+   000062         006120     VALUE 'ENC(CUR) THR(CUR) FILE VAR NOBLOCK NOSTOR SF(ALL)' .  !@01
+   000063         006200 77  AFPWRITE                PIC X(8) VALUE 'AFPWRITE'.
+   000064         006300 77  ACSTCHR-LENGTH          PIC 9(8) BINARY VALUE ZERO.                   IMP
+   000065         006400 01  GLOBAL-VARIABLES            GLOBAL.
+   000066         006500     05  ACSTCHR-IN-STATUS       PIC 99   VALUE ZERO.                      IMP
+   000067         006600         88  ACSTCHR-IN-OK       VALUE 00.
+   000068         006700         88  ACSTCHR-IN-EOF      VALUE 10.
+1ACIF Strip Character Input Exit                                ACSTCHR   Date 12/20/2019  Time 11:03:57   Page     6
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+   000069         006800/ PASSED PARAMETERS.
+   000070         006900 LINKAGE SECTION.
+   000071         007000 01  INP-PARMS.
+   000072         007100     05  INP-USTOR           POINTER.
+   000073         007200     05  INP-PFATTR          POINTER.
+   000074         007300     05  INP-RECPTR          POINTER.
+   000075         007400     05  FILLER              POINTER.
+   000076         007500     05  INP-RECLEN          PIC 9(4) BINARY.
+   000077         007600     05  FILLER              PIC XX.
+   000078         007700     05  INP-REQUEST         PIC X.
+   000079         007800         88  INP-USE         VALUE X'00'.
+   000080         007900         88  INP-DELETE      VALUE X'01'.
+   000081         008000         88  INP-INSERT      VALUE X'02'.
+   000082         008100     05  INP-EOF-FLAG        PIC X.
+   000083         008200         88  INP-EOF         VALUE 'Y'.
+   000084         008300
+   000085         008400 01  INP-UAREA.
+   000086         008500     05  UAREA-CHGCNT        PIC 9(8) BINARY.
+   000087         008600     05  UAREA-RECCNT        PIC 9(8) BINARY.
+   000088         008700     05  INIT-FLAG           PIC X.
+   000089         008800         88 INITTED          VALUE HIGH-VALUE.                             IMP
+   000090         008900         88 NOT-INITTED      VALUE LOW-VALUE.                              IMP
+   000091         009000     05  FILLER              PIC X(07).
+   000092         009100
+   000093         009200 01  INP-ATTR.
+   000094         009300     05  INP-CC              PIC XXX.
+   000095         009400     05  INP-CCTYPE          PIC X.
+   000096         009500         88  INP-ANSI-CC     VALUE 'A'.
+   000097         009600         88  INP-MACH-CC     VALUE 'M'.
+   000098         009700     05  INP-CHARS           PIC X(20).
+   000099         009800     05  INP-FORMDEF         PIC X(8).
+   000100         009900     05  INP-PAGEDEF         PIC X(8).
+   000101         010000     05  INP-PRMODE          PIC X(8).
+   000102         010100     05  INP-TRC             PIC XXX.
+   000103         010200
+   000104         010300* This is a template for the input record, pointed to by
+   000105         010400* INP-RECPTR. The record's actual length is given by
+   000106         010500* INP-RECLEN.
+   000107         010600 01  INP-LINE.
+   000108         010700     05  INP-BYTE1           PIC X.
+   000109         010800     05  INP-CCVAL           PIC X.
+   000110         010900     05  INP-TRCVAL          PIC X.
+   000111         011000     05  INP-DATA            PIC X(32750).
+   000112         011100* This is the returned record. It is pointed to by INP-RECPTR.
+   000113         011200*The length is given by the adusted value of INP-RECLEN.
+   000114         011300 01  INP-NEWLINE.
+   000115         011400     05  INP-CCVAL           PIC X.
+   000116         011500     05  INP-TRCVAL          PIC X.
+   000117         011600     05  INP-DATA            PIC X(32750).
+
+1Initialization and Main Line                                   ACSTCHR   Date 12/20/2019  Time 11:03:57   Page     7
+   LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+   000120         011900 PROCEDURE DIVISION USING INP-PARMS.                                       71
+   000121         012000* make work area, attributes, and input line addressable.
+   000122         012100     SET ADDRESS OF INP-UAREA TO INP-USTOR.                                IMP 85 72
+   000123         012200     SET ADDRESS OF INP-ATTR TO INP-PFATTR.                                IMP 93 73
+   000124         012300     SET ADDRESS OF INP-LINE TO INP-RECPTR.                                IMP 107 74
+   000125         012400     SET ADDRESS OF INP-NEWLINE TO INP-RECPTR.                             IMP 114 74
+   000126         012500* First time through, reset counters and first-time flag in the
+   000127         012600*ACIF user area.
+   000128         012700     IF NOT-INITTED                                                        90
+   000129         012800      THEN
+   000130      1  012900       SET INITTED TO TRUE;                                                89
+   000131      1  013000       MOVE ZERO TO UAREA-CHGCNT, UAREA-RECCNT;                            IMP 86 87
+   000132         013100     END-IF.
+   000133         013200* no special action is necessary at EOF.
+   000134         013300     IF INP-EOF                                                            83
+   000135         013400      THEN
+   000136      1  013500       DISPLAY PGMNAME, ' EOF REACHED.';                                   58
+   000137      1  013600       DISPLAY PGMNAME, UAREA-CHGCNT, ' RECORDS CHANGED OF ',              58 86
+   000138      1  013700               UAREA-RECCNT;                                               87
+   000139      1  013800       GOBACK;
+   000140         013900     END-IF.
+   000141         014000     ADD 1 TO UAREA-RECCNT.                                                87
+
+   000143         014200* If the first byte is a zero, shift the record left one byte
+   000144         014300*by moving it over itself in the buffer.
+   000145         014400*Adjust the returned record length.
+   000146         014500     IF INP-BYTE1 = ZERO                                                   108 IMP
+   000147         014600      THEN
+   000148      1  014700       SUBTRACT 1 FROM INP-RECLEN;                                         76
+   000149      1  014800       MOVE INP-LINE (2 : INP-RECLEN) TO INP-NEWLINE;                      107 76 114
+   000150      1  014900       ADD 1 TO UAREA-CHGCNT;                                              86
+   000151         015000     END-IF.
+   000152         015100* Indicate that record passed to exit will be returned.
+   000153         015200     SET INP-USE TO TRUE.                                                  79
+
+   000155         015400     GOBACK.
+1Initialization and Main Line                                   ACSTCHR   Date 12/20/2019  Time 11:03:57   Page     8
+0An "M" preceding a data-name reference indicates that the data-name is modified by this reference.
+
+  Defined   Cross-reference of data names   References
+
+       60   ABEND-CODE
+       61   ABEND-OPTS
+       59   ABND-PGM
+       68   ACSTCHR-IN-EOF
+       67   ACSTCHR-IN-OK
+       66   ACSTCHR-IN-STATUS
+       64   ACSTCHR-LENGTH
+       63   AFPWRITE
+       65   GLOBAL-VARIABLES
+       88   INIT-FLAG
+       89   INITTED. . . . . . . . . . . .  M130
+       96   INP-ANSI-CC
+       93   INP-ATTR . . . . . . . . . . .  123
+      108   INP-BYTE1. . . . . . . . . . .  146
+       94   INP-CC
+       95   INP-CCTYPE
+      109   INP-CCVAL
+      115   INP-CCVAL
+       98   INP-CHARS
+      111   INP-DATA
+      117   INP-DATA
+       80   INP-DELETE
+       83   INP-EOF. . . . . . . . . . . .  134
+       82   INP-EOF-FLAG
+       99   INP-FORMDEF
+       81   INP-INSERT
+      107   INP-LINE . . . . . . . . . . .  124 149
+       97   INP-MACH-CC
+      114   INP-NEWLINE. . . . . . . . . .  125 M149
+      100   INP-PAGEDEF
+       71   INP-PARMS. . . . . . . . . . .  120
+       73   INP-PFATTR . . . . . . . . . .  123
+      101   INP-PRMODE
+       76   INP-RECLEN . . . . . . . . . .  M148 149
+       74   INP-RECPTR . . . . . . . . . .  124 125
+       78   INP-REQUEST
+      102   INP-TRC
+      110   INP-TRCVAL
+      116   INP-TRCVAL
+       85   INP-UAREA. . . . . . . . . . .  122
+       79   INP-USE. . . . . . . . . . . .  M153
+       72   INP-USTOR. . . . . . . . . . .  122
+       90   NOT-INITTED. . . . . . . . . .  128
+       58   PGMNAME. . . . . . . . . . . .  136 137
+       86   UAREA-CHGCNT . . . . . . . . .  M131 137 M150
+       87   UAREA-RECCNT . . . . . . . . .  M131 138 M141
+1Initialization and Main Line                                   ACSTCHR   Date 12/20/2019  Time 11:03:57   Page     9
+0 Defined   Cross-reference of programs     References
+
+        3   ACSTCHR
+-* Statistics for COBOL program ACSTCHR:
+ *    Source records = 155
+ *    Data Division statements = 46
+ *    Procedure Division statements = 18
+ *    Generated COBOL statements = 0
+ *    Program complexity factor = 18
+0End of compilation 1,  program ACSTCHR,  no statements flagged.
+0Return code 0
